@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Sharp-NeRF: Grid-based Fast Deblurring Neural Radiance Fields Using Sharpness Prior</title>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link href="css/style.css" rel="stylesheet" type="text/css" />
+	<style>
+		html,
+		body,
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
+			font-family: "Titillium Web", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+		}
+
+		< !-- .cite {
+			background: #f0f0f0;
+			padding: 10px;
+			font-size: 18px
+		}
+
+		-->.cite {
+			padding: 0px;
+			background: #ffffff;
+			font-size: 18px
+		}
+
+		.card {
+			border: 1px solid #ccc
+		}
+
+		img {
+			margin-bottom: -6px;
+		}
+
+		p {
+			font-size: 18px;
+		}
+
+		a {
+			text-decoration: none;
+			color: #2196F3;
+		}
+		
+		.bibtexsection {
+			width: 100%;
+			height: 12em;
+			font-family: "Courier", monospace;
+			/* font-size: 1vw; */
+			white-space: pre;
+			background-color: #f4f4f4;
+			margin-left: auto;
+			margin-right: auto;
+			text-align: left;
+		}
+
+		.layered-paper-big {
+			/* modified from: http://css-tricks.com/snippets/css/layered-paper/ */
+			box-shadow:
+				0px 0px 1px 1px rgba(0, 0, 0, 0.35),
+				/* The top layer shadow */
+				5px 5px 0 0px #fff,
+				/* The second layer */
+				5px 5px 1px 1px rgba(0, 0, 0, 0.35),
+				/* The second layer shadow */
+				10px 10px 0 0px #fff,
+				/* The third layer */
+				10px 10px 1px 1px rgba(0, 0, 0, 0.35),
+				/* The third layer shadow */
+				15px 15px 0 0px #fff,
+				/* The fourth layer */
+				15px 15px 1px 1px rgba(0, 0, 0, 0.35),
+				/* The fourth layer shadow */
+				20px 20px 0 0px #fff,
+				/* The fifth layer */
+				20px 20px 1px 1px rgba(0, 0, 0, 0.35),
+				/* The fifth layer shadow */
+				25px 25px 0 0px #fff,
+				/* The fifth layer */
+				25px 25px 1px 1px rgba(0, 0, 0, 0.35);
+			/* The fifth layer shadow */
+			margin-left: 10px;
+			margin-right: 60px;
+		}
+
+		table {
+			text-align: center;
+			margin-left: auto;
+			margin-right: auto;
+			border-collapse: collapse;
+		}
+
+		table> :is(thead, tbody)>tr> :is(th, td) {
+			padding: 3px;
+			text-align: center;
+		}
+
+		table>thead>tr> :is(th, td) {
+			border-top: 2px solid;
+			border-bottom: 1px solid;
+		}
+
+		table>tbody>tr:last-child> :is(th, td) {
+			border-bottom: 2px solid;
+		}
+
+		table>tbody {
+			border-top: 2px solid;
+			border-bottom: 1px solid;
+		}
+	</style>
+</head>
+
+<body class="w3-white">
+	<!-- Page Container -->
+	<div class="w3-content w3-margin-top w3-margin-bottom" style="max-width:960px;">
+
+		<!-- The Grid -->
+		<div class="w3-row-padding">
+
+			<!-- paper container -->
+			<div class="w3-display-container w3-row w3-white w3-margin-bottom">
+				<div class="w3-center">
+					<h1>Sharp-NeRF: Grid-based Fast Deblurring </h1> 
+					<h1>Neural Radiance Fields Using Sharpness Prior</h1>
+					<a href="https://wacv2024.thecvf.com/"><h2 style="color: gray" >WACV 2024</h2></a>
+					<h5>Byeonghyeon Lee<sup>1*</sup>, Howoong Lee<sup>1,2*</sup>, Usman Ali<sup>1†</sup>, and Eunbyung Park<sup>1†</sup></h5>
+					<h5><sup>1</sup>Sungkyunkwan University, <sup>2</sup>Hanwha Vision</h5>
+					<h5><sup>*</sup>Equal contribution, <sup>†</sup>Corresponding authors</h5>
+				</div>
+
+				<div class="w3-center">
+					<h3>[<a href="https://github.com/benhenryL/SharpNeRF">Code</a>] &emsp; [<a href="https://arxiv.org/abs/2212.09069">Paper</a>]</h3>
+				</div>
+
+				<hr>
+				<div class="w3-display-container w3-row w3-white w3-margin-bottom w3-center">
+					<img src="images/architecture.png" style="width:100%">
+
+<!-- 					<video controls style="width:100%" autoplay loop playsinline muted>
+						<source src="videos/media1.mp4" type="video/mp4">
+						Sorry, your browser doesn't support embedded videos.
+					</video> -->
+				</div>
+				
+				<hr>
+				<div class="w3-center">
+					<h2>Abstract</h2>
+				</div>
+				<p align="justify">Neural Radiance Fields (NeRF) has shown its remarkable performance in neural rendering-based novel view synthesis. However, NeRF suffers from severe visual quality degradation when the input images have been captured under imperfect conditions, such as poor illumination, defocus blurring and lens aberrations. Especially, defocus blur is quite common in the images when they are normally captured using cameras. Although few recent studies have proposed to render sharp images of considerably high-quality, yet they still face many key challenges. In particular, those methods have employed a Multi-Layer Perceptron (MLP) based NeRF which requires tremendous computational time. To overcome these shortcomings, this paper proposes a novel technique Sharp-NeRF---a grid-based NeRF that renders clean and sharp images from the input blurry images within a half an hour training. To do so, we used several grid-based kernels to accurately model the sharpness/blurriness of the scene. The sharpness level of the pixels is computed to learn the spatially varying blur kernels. We have conducted experiments on the benchmarks consisting of blurry images and have evaluated full-reference and non-reference metrics. The qualitative and quantitative results have revealed that our approach renders the sharp novel views with vivid colors and fine details, and it has considerably faster training time than the previous works.</p>
+				
+				<!-- <hr>
+				<div class="w3-center">
+					<h2>Why wavelet transform?</h2>
+				</div>
+				<div class="w3-display-container w3-row w3-white w3-margin-bottom">
+					<div align="center">
+						<img src="images/new_synthetic.png" style="width:37%">
+						<img src="images/fig_level.png" style="width:35%; margin-top:-10px">
+					</div>
+						<img src="images/rate_distortion_large_multi.png" style="width:100%; margin-top:20px">
+						<p align="justify">Using wavelet coefficients can enhance visual quality, especially when sparsity is high. Furthermore, using a higher level of the wavelet transform can improve visual quality and sparsity even further.</p>
+				</div> -->
+
+				<!-- <hr>
+				<div class="w3-center">
+					<h2>Grid visualization</h2>
+				</div>
+				<div class="w3-display-container w3-row w3-white w3-margin-bottom w3-center">
+					<div style="display: inline-block; width:35%">
+						<div class="centered"><h3>Top</h3></div>
+						<img src="images/org_wavelet_0.png" style="width:100%">
+					</div>
+					<div style="display: inline-block; width:40%">
+						<div class="centered"><h3>Lateral</h3></div>
+						<img src="images/org_wavelet_1.png" style="width:100%">
+					</div>
+					<div style="display: inline-block; width:22%">
+						<div class="centered"><h3>Front</h3></div>
+						<img src="images/org_wavelet_2.png" style="width:100%">
+					</div>
+					<p align="center">Wavelet coefficients</p>
+					
+					<div style="display: inline-block; width:35%">
+						<img src="images/wavelet_mask_0.png" style="width:100%">
+					</div>
+					<div style="display: inline-block; width:40%">
+						<img src="images/wavelet_mask_1.png" style="width:100%">
+					</div>
+					<div style="display: inline-block; width:22%">
+						<img src="images/wavelet_mask_2.png" style="width:100%">
+					</div>
+					<p align="center">Binary mask</p>
+					
+					<div style="display: inline-block; width:35%">
+						<img src="images/wavelet_0.png" style="width:100%">
+					</div>
+					<div style="display: inline-block; width:40%">
+						<img src="images/wavelet_1.png" style="width:100%">
+					</div>
+					<div style="display: inline-block; width:22%">
+						<img src="images/wavelet_2.png" style="width:100%">
+					</div>
+					<p align="center">Masked wavelet coefficients</p>
+					
+					<div style="display: inline-block; width:35%">
+						<img src="images/spatial_0.png" style="width:100%">
+					</div>
+					<div style="display: inline-block; width:40%">
+						<img src="images/spatial_1.png" style="width:100%">
+					</div>
+					<div style="display: inline-block; width:22%">
+						<img src="images/spatial_2.png" style="width:100%">
+					</div>
+					<p align="center">After IDWT</p>
+
+					<p align="center">With our proposed method, most wavelet coefficients (more than 95%) can be zeroed out.</p>
+				</div> -->
+
+				<!-- <hr>
+				<div class="w3-center">
+					<h2>Demo</h2>
+				</div>
+				<p><strong>NeRF Synthetic Dataset - Lego</strong></p>
+				<div align="center" style="margin-bottom: 52px;"> 
+					<img-comparison-slider hover="hover" tabindex="0" class="rendered">
+					<figure slot="first" class="before"> 
+						<img id="left_img_NeRF_Lego" src="https://huggingface.co/blee/Masked_Wavelet_Representation/resolve/main/images/NeRF/Lego/TensoRF/000.png" style="min-width: 800px;">
+						<figcaption id="left_caption_NeRF_Lego" style="text-align:left;"> 
+							<b>TensoRF-VM192</b>
+							<br>PSNR: 36.04
+							<br>Size: 17.03MB
+						</figcaption>
+					</figure>
+					<figure slot="second" class="after"> 
+						<img type="image/png" id="right_img_NeRF_Lego" src="https://huggingface.co/blee/Masked_Wavelet_Representation/resolve/main/images/NeRF/Lego/000/5e-11.png" style="min-width: 800px;">
+						<figcaption id="right_caption_NeRF_Lego" style="text-align:right;"> 
+							<b>Ours-Sparsity 0.9441</b>
+							<br>PSNR: 35.33
+							<br>Size: 1.67MB 
+						</figcaption>
+					</figure>
+				</img-comparison-slider>
+				<div class="table-wrapper">
+					<table width="100%">
+						<tbody>
+							<tr>
+								<td align="center"> Left Model</td>
+								<td align="center"> Frame</td>
+								<td align="center"> Right Model</td>
+							</tr>
+							<tr>
+								<td align="center"> 
+									<select id="left_select_NeRF_Lego" onchange="select_model(this, 'left', 'NeRF', 'Lego')"> 
+										<option value="GT">Ground Truth </option>
+										<option selected="selected" value="TensoRF">TensoRF </option>
+										<option value="6.25e-12">Ours-Sparsity 0.8758 </option>
+										<option value="1.25e-11">Ours-Sparsity 0.9165 </option>
+										<option value="2.5e-11">Ours-Sparsity 0.9441 </option>
+										<option value="5e-11">Ours-Sparsity 0.9652 </option>
+										<option value="1e-10">Ours-Sparsity 0.9794 </option>
+										<option value="2e-10">Ours-Sparsity 0.9864 </option>
+										<option value="4e-10">Ours-Sparsity 0.9907 </option>
+										<option value="8e-10">Ours-Sparsity 0.9940 </option>
+										<option value="1.6e-09">Ours-Sparsity 0.9959 </option>
+									</select></td><td align="center"> 
+										<input id="input_NeRF_Lego" type="range" min="0" max="199" value="0" onchange="select_frame(this, 'NeRF', 'Lego')">
+									</td>
+									<td align="center"> 
+										<select id="right_select_NeRF_Lego" onchange="select_model(this, 'right', 'NeRF', 'Lego')"> 
+											<option value="GT">Ground Truth </option>
+											<option value="TensoRF">TensoRF </option>
+											<option value="6.25e-12">Ours-Sparsity 0.8758 </option>
+											<option value="1.25e-11">Ours-Sparsity 0.9165 </option>
+											<option value="2.5e-11">Ours-Sparsity 0.9441 </option>
+											<option selected="selected" value="5e-11">Ours-Sparsity 0.9652 </option>
+											<option value="1e-10">Ours-Sparsity 0.9794 </option>
+											<option value="2e-10">Ours-Sparsity 0.9864 </option>
+											<option value="4e-10">Ours-Sparsity 0.9907 </option>
+											<option value="8e-10">Ours-Sparsity 0.9940 </option>
+											<option value="1.6e-09">Ours-Sparsity 0.9959 </option>
+										</select>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div> -->
+
+				
+
+				<!-- <p><strong>NeRF Synthetic Dataset</strong></p>
+				<video controls style="width:48%" autoplay loop playsinline muted>
+					<source src="videos/NeRF/chair_mixed.mp4" type="video/mp4">
+					Sorry, your browser doesn't support embedded videos.
+				</video>
+				<video controls style="width:48%" autoplay loop playsinline muted>
+					<source src="videos/NeRF/drums_mixed.mp4" type="video/mp4">
+					Sorry, your browser doesn't support embedded videos.
+				</video>
+				<video controls style="width:48%" autoplay loop playsinline muted>
+					<source src="videos/NeRF/ficus_mixed.mp4" type="video/mp4">
+					Sorry, your browser doesn't support embedded videos.
+				</video>
+				<video controls style="width:48%" autoplay loop playsinline muted>
+					<source src="videos/NeRF/hotdog_mixed.mp4" type="video/mp4">
+					Sorry, your browser doesn't support embedded videos.
+				</video>
+				<video controls style="width:48%" autoplay loop playsinline muted>
+					<source src="videos/NeRF/lego_mixed.mp4" type="video/mp4">
+					Sorry, your browser doesn't support embedded videos.
+				</video>
+				<video controls style="width:48%" autoplay loop playsinline muted>
+					<source src="videos/NeRF/materials_mixed.mp4" type="video/mp4">
+					Sorry, your browser doesn't support embedded videos.
+				</video>
+				<video controls style="width:48%" autoplay loop playsinline muted>
+					<source src="videos/NeRF/mic_mixed.mp4" type="video/mp4">
+					Sorry, your browser doesn't support embedded videos.
+				</video>
+				<video controls style="width:48%" autoplay loop playsinline muted>
+					<source src="videos/NeRF/ship_mixed.mp4" type="video/mp4">
+					Sorry, your browser doesn't support embedded videos.
+				</video>
+				
+				
+				<p><strong>NSVF Synthetic Dataset</strong></p>
+				<video controls style="width:48%" autoplay loop playsinline muted>
+					<source src="videos/NSVF/Bike_mixed.mp4" type="video/mp4">
+					Sorry, your browser doesn't support embedded videos.
+				</video>
+				<video controls style="width:48%" autoplay loop playsinline muted>
+					<source src="videos/NSVF/Lifestyle_mixed.mp4" type="video/mp4">
+					Sorry, your browser doesn't support embedded videos.
+				</video>
+				<video controls style="width:48%" autoplay loop playsinline muted>
+					<source src="videos/NSVF/Palace_mixed.mp4" type="video/mp4">
+					Sorry, your browser doesn't support embedded videos.
+				</video>
+				<video controls style="width:48%" autoplay loop playsinline muted>
+					<source src="videos/NSVF/Robot_mixed.mp4" type="video/mp4">
+					Sorry, your browser doesn't support embedded videos.
+				</video>
+				<video controls style="width:48%" autoplay loop playsinline muted>
+					<source src="videos/NSVF/Spaceship_mixed.mp4" type="video/mp4">
+					Sorry, your browser doesn't support embedded videos.
+				</video>
+				<video controls style="width:48%" autoplay loop playsinline muted>
+					<source src="videos/NSVF/Steamtrain_mixed.mp4" type="video/mp4">
+					Sorry, your browser doesn't support embedded videos.
+				</video>
+				<video controls style="width:48%" autoplay loop playsinline muted>
+					<source src="videos/NSVF/Toad_mixed.mp4" type="video/mp4">
+					Sorry, your browser doesn't support embedded videos.
+				</video>
+				<video controls style="width:48%" autoplay loop playsinline muted>
+					<source src="videos/NSVF/Wineholder_mixed.mp4" type="video/mp4">
+					Sorry, your browser doesn't support embedded videos.
+				</video> -->
+				
+				<hr>
+				<div class="w3-center">
+					<h2>Bibtex</h2>
+				</div>
+				<textarea class="bibtexsection" readonly>
+@InProceedings{Lee_2024_WACV,
+	author    = {Lee, Byeonghyeon and Lee, Howoong and Ali, Usman and Park, Eunbyung},
+	title     = {Sharp-NeRF: Grid-Based Fast Deblurring Neural Radiance Fields Using Sharpness Prior},
+	booktitle = {Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)},     
+	month     = {January},     
+	year      = {2024},     
+	pages     = {3709-3718} }
+}</textarea>
+
+				<hr>
+				<div class="w3-center">
+					<p class="text-justify">
+						We used the project page of <a href="https://github.com/daniel03c1/masked_wavelet_nerf/">Masked Wavelet Representation for Compact Neural Radiance Fields</a> as a template.
+					</p>
+				</div>
+			</div>
+			<!-- end paper container -->
+
+		</div><!-- End Grid -->
+	</div><!-- End Page Container -->
+
+</body>
+<script
+defer
+src="https://unpkg.com/img-comparison-slider@7/dist/index.js"
+></script>
+<script type="text/javascript" src="js/main.js"></script> 
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/img-comparison-slider@7/dist/styles.css"
+/>
+
+</html>
