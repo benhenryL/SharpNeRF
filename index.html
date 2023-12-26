@@ -154,18 +154,50 @@
 				</div>
 				<p align="justify">Neural Radiance Fields (NeRF) has shown its remarkable performance in neural rendering-based novel view synthesis. However, NeRF suffers from severe visual quality degradation when the input images have been captured under imperfect conditions, such as poor illumination, defocus blurring and lens aberrations. Especially, defocus blur is quite common in the images when they are normally captured using cameras. Although few recent studies have proposed to render sharp images of considerably high-quality, yet they still face many key challenges. In particular, those methods have employed a Multi-Layer Perceptron (MLP) based NeRF which requires tremendous computational time. To overcome these shortcomings, this paper proposes a novel technique Sharp-NeRF---a grid-based NeRF that renders clean and sharp images from the input blurry images within a half an hour training. To do so, we used several grid-based kernels to accurately model the sharpness/blurriness of the scene. The sharpness level of the pixels is computed to learn the spatially varying blur kernels. We have conducted experiments on the benchmarks consisting of blurry images and have evaluated full-reference and non-reference metrics. The qualitative and quantitative results have revealed that our approach renders the sharp novel views with vivid colors and fine details, and it has considerably faster training time than the previous works.</p>
 				
-				<!-- <hr>
-				<div class="w3-center">
+				<hr>
+				<!-- <div class="w3-center">
 					<h2>Why wavelet transform?</h2>
-				</div>
+				</div> -->
 				<div class="w3-display-container w3-row w3-white w3-margin-bottom">
 					<div align="center">
-						<img src="images/new_synthetic.png" style="width:37%">
-						<img src="images/fig_level.png" style="width:35%; margin-top:-10px">
-					</div>
+						<img src="images/curve.png" style="width:100%">
+						<p align="justify">Comparison in terms of training time and image qual-
+							ity on the real defocus dataset. Left: Evaluated under full-
+							reference metric (PSNR). Right: Evaluated under no-reference
+							metric (Niqe).</p>
+					<!-- </div>
 						<img src="images/rate_distortion_large_multi.png" style="width:100%; margin-top:20px">
-						<p align="justify">Using wavelet coefficients can enhance visual quality, especially when sparsity is high. Furthermore, using a higher level of the wavelet transform can improve visual quality and sparsity even further.</p>
-				</div> -->
+						<p align="justify">Using wavelet coefficients can enhance visual quality, especially when sparsity is high. Furthermore, using a higher level of the wavelet transform can improve visual quality and sparsity even further.</p> -->
+				</div>
+				
+				<hr>
+				<div class="w3-center">
+					<h2>Method</h2>
+				</div>
+
+				<p><strong>Sharpness Prior</strong></p>
+				<div class="w3-display-container w3-row w3-white w3-margin-bottom">
+					<div align="center">
+						<img src="images/focus_measure_operator_ablation_study.png" style="width:100%">
+						<p align="justify">Comparison of sharpness maps provided by various sharpness priors. (a): Sample images, and sharpness maps from (b):
+							Tenengrad, (c): SML, and (d): DMENet.</p>
+				</div>
+
+				<p><strong>Grid-based Blur Kernel</strong></p>
+				<div class="w3-display-container w3-row w3-white w3-margin-bottom">
+					<div align="center">
+						<img src="images/kernel_vis.png" style="width:100%">
+						<p align="justify">Visualization of blur kernels. From left to right, the values of kernels are widely spread which implies that leftmost kernel
+							is responsible for sharp region and rightmost kernel is responsible for blurry region.</p>
+				</div>
+
+				<p><strong>Patch Sampling</strong></p>
+				<div class="w3-display-container w3-row w3-white w3-margin-bottom">
+					<div align="center">
+						<img src="images/patch_sampling.png" style="width:100%">
+						<p align="justify">Left: random ray sampling. Right: random patch sampling. Blue pixels are P′ × P′ interesting pixels to be rendered
+							and skyblue pixels are required neighboring pixels for blur convolution.</p>
+				</div>
 
 				<!-- <hr>
 				<div class="w3-center">
@@ -293,43 +325,51 @@
 				</div> -->
 
 				
-
-				<!-- <p><strong>NeRF Synthetic Dataset</strong></p>
+				<hr>
+				<p><strong>Deblur Defocus Dataset</strong></p>
 				<video controls style="width:48%" autoplay loop playsinline muted>
-					<source src="videos/NeRF/chair_mixed.mp4" type="video/mp4">
+					<source src="videos/cake.mp4" type="video/mp4">
 					Sorry, your browser doesn't support embedded videos.
 				</video>
 				<video controls style="width:48%" autoplay loop playsinline muted>
-					<source src="videos/NeRF/drums_mixed.mp4" type="video/mp4">
+					<source src="videos/caps.mp4" type="video/mp4">
 					Sorry, your browser doesn't support embedded videos.
 				</video>
 				<video controls style="width:48%" autoplay loop playsinline muted>
-					<source src="videos/NeRF/ficus_mixed.mp4" type="video/mp4">
+					<source src="videos/cisco.mp4" type="video/mp4">
 					Sorry, your browser doesn't support embedded videos.
 				</video>
 				<video controls style="width:48%" autoplay loop playsinline muted>
-					<source src="videos/NeRF/hotdog_mixed.mp4" type="video/mp4">
+					<source src="videos/coral.mp4" type="video/mp4">
 					Sorry, your browser doesn't support embedded videos.
 				</video>
 				<video controls style="width:48%" autoplay loop playsinline muted>
-					<source src="videos/NeRF/lego_mixed.mp4" type="video/mp4">
+					<source src="videos/cupcake.mp4" type="video/mp4">
 					Sorry, your browser doesn't support embedded videos.
 				</video>
 				<video controls style="width:48%" autoplay loop playsinline muted>
-					<source src="videos/NeRF/materials_mixed.mp4" type="video/mp4">
+					<source src="videos/cups.mp4" type="video/mp4">
 					Sorry, your browser doesn't support embedded videos.
 				</video>
 				<video controls style="width:48%" autoplay loop playsinline muted>
-					<source src="videos/NeRF/mic_mixed.mp4" type="video/mp4">
+					<source src="videos/daisy.mp4" type="video/mp4">
 					Sorry, your browser doesn't support embedded videos.
 				</video>
 				<video controls style="width:48%" autoplay loop playsinline muted>
-					<source src="videos/NeRF/ship_mixed.mp4" type="video/mp4">
+					<source src="videos/sausage.mp4" type="video/mp4">
+					Sorry, your browser doesn't support embedded videos.
+				</video>
+				<video controls style="width:48%" autoplay loop playsinline muted>
+					<source src="videos/seal.mp4" type="video/mp4">
+					Sorry, your browser doesn't support embedded videos.
+				</video>
+				<video controls style="width:48%" autoplay loop playsinline muted>
+					<source src="videos/tools.mp4" type="video/mp4">
 					Sorry, your browser doesn't support embedded videos.
 				</video>
 				
 				
-				<p><strong>NSVF Synthetic Dataset</strong></p>
+				<!-- <p><strong>NSVF Synthetic Dataset</strong></p>
 				<video controls style="width:48%" autoplay loop playsinline muted>
 					<source src="videos/NSVF/Bike_mixed.mp4" type="video/mp4">
 					Sorry, your browser doesn't support embedded videos.
