@@ -141,11 +141,6 @@
 				<hr>
 				<div class="w3-display-container w3-row w3-white w3-margin-bottom w3-center">
 					<img src="images/architecture.png" style="width:100%">
-
-<!-- 					<video controls style="width:100%" autoplay loop playsinline muted>
-						<source src="videos/media1.mp4" type="video/mp4">
-						Sorry, your browser doesn't support embedded videos.
-					</video> -->
 				</div>
 				
 				<hr>
@@ -155,9 +150,6 @@
 				<p align="justify">Neural Radiance Fields (NeRF) has shown its remarkable performance in neural rendering-based novel view synthesis. However, NeRF suffers from severe visual quality degradation when the input images have been captured under imperfect conditions, such as poor illumination, defocus blurring and lens aberrations. Especially, defocus blur is quite common in the images when they are normally captured using cameras. Although few recent studies have proposed to render sharp images of considerably high-quality, yet they still face many key challenges. In particular, those methods have employed a Multi-Layer Perceptron (MLP) based NeRF which requires tremendous computational time. To overcome these shortcomings, this paper proposes a novel technique Sharp-NeRF---a grid-based NeRF that renders clean and sharp images from the input blurry images within a half an hour training. To do so, we used several grid-based kernels to accurately model the sharpness/blurriness of the scene. The sharpness level of the pixels is computed to learn the spatially varying blur kernels. We have conducted experiments on the benchmarks consisting of blurry images and have evaluated full-reference and non-reference metrics. The qualitative and quantitative results have revealed that our approach renders the sharp novel views with vivid colors and fine details, and it has considerably faster training time than the previous works.</p>
 				
 				<hr>
-				<!-- <div class="w3-center">
-					<h2>Why wavelet transform?</h2>
-				</div> -->
 				<div class="w3-display-container w3-row w3-white w3-margin-bottom">
 					<div align="center">
 						<img src="images/curve.png" style="width:100%">
@@ -165,9 +157,6 @@
 							ity on the real defocus dataset. Left: Evaluated under full-
 							reference metric (PSNR). Right: Evaluated under no-reference
 							metric (Niqe).</p>
-					<!-- </div>
-						<img src="images/rate_distortion_large_multi.png" style="width:100%; margin-top:20px">
-						<p align="justify">Using wavelet coefficients can enhance visual quality, especially when sparsity is high. Furthermore, using a higher level of the wavelet transform can improve visual quality and sparsity even further.</p> -->
 				</div>
 				
 				<hr>
@@ -198,131 +187,6 @@
 						<p align="justify">Left: random ray sampling. Right: random patch sampling. Blue pixels are P′ × P′ interesting pixels to be rendered
 							and skyblue pixels are required neighboring pixels for blur convolution.</p>
 				</div>
-
-				<!-- <hr>
-				<div class="w3-center">
-					<h2>Grid visualization</h2>
-				</div>
-				<div class="w3-display-container w3-row w3-white w3-margin-bottom w3-center">
-					<div style="display: inline-block; width:35%">
-						<div class="centered"><h3>Top</h3></div>
-						<img src="images/org_wavelet_0.png" style="width:100%">
-					</div>
-					<div style="display: inline-block; width:40%">
-						<div class="centered"><h3>Lateral</h3></div>
-						<img src="images/org_wavelet_1.png" style="width:100%">
-					</div>
-					<div style="display: inline-block; width:22%">
-						<div class="centered"><h3>Front</h3></div>
-						<img src="images/org_wavelet_2.png" style="width:100%">
-					</div>
-					<p align="center">Wavelet coefficients</p>
-					
-					<div style="display: inline-block; width:35%">
-						<img src="images/wavelet_mask_0.png" style="width:100%">
-					</div>
-					<div style="display: inline-block; width:40%">
-						<img src="images/wavelet_mask_1.png" style="width:100%">
-					</div>
-					<div style="display: inline-block; width:22%">
-						<img src="images/wavelet_mask_2.png" style="width:100%">
-					</div>
-					<p align="center">Binary mask</p>
-					
-					<div style="display: inline-block; width:35%">
-						<img src="images/wavelet_0.png" style="width:100%">
-					</div>
-					<div style="display: inline-block; width:40%">
-						<img src="images/wavelet_1.png" style="width:100%">
-					</div>
-					<div style="display: inline-block; width:22%">
-						<img src="images/wavelet_2.png" style="width:100%">
-					</div>
-					<p align="center">Masked wavelet coefficients</p>
-					
-					<div style="display: inline-block; width:35%">
-						<img src="images/spatial_0.png" style="width:100%">
-					</div>
-					<div style="display: inline-block; width:40%">
-						<img src="images/spatial_1.png" style="width:100%">
-					</div>
-					<div style="display: inline-block; width:22%">
-						<img src="images/spatial_2.png" style="width:100%">
-					</div>
-					<p align="center">After IDWT</p>
-
-					<p align="center">With our proposed method, most wavelet coefficients (more than 95%) can be zeroed out.</p>
-				</div> -->
-
-				<!-- <hr>
-				<div class="w3-center">
-					<h2>Demo</h2>
-				</div>
-				<p><strong>NeRF Synthetic Dataset - Lego</strong></p>
-				<div align="center" style="margin-bottom: 52px;"> 
-					<img-comparison-slider hover="hover" tabindex="0" class="rendered">
-					<figure slot="first" class="before"> 
-						<img id="left_img_NeRF_Lego" src="https://huggingface.co/blee/Masked_Wavelet_Representation/resolve/main/images/NeRF/Lego/TensoRF/000.png" style="min-width: 800px;">
-						<figcaption id="left_caption_NeRF_Lego" style="text-align:left;"> 
-							<b>TensoRF-VM192</b>
-							<br>PSNR: 36.04
-							<br>Size: 17.03MB
-						</figcaption>
-					</figure>
-					<figure slot="second" class="after"> 
-						<img type="image/png" id="right_img_NeRF_Lego" src="https://huggingface.co/blee/Masked_Wavelet_Representation/resolve/main/images/NeRF/Lego/000/5e-11.png" style="min-width: 800px;">
-						<figcaption id="right_caption_NeRF_Lego" style="text-align:right;"> 
-							<b>Ours-Sparsity 0.9441</b>
-							<br>PSNR: 35.33
-							<br>Size: 1.67MB 
-						</figcaption>
-					</figure>
-				</img-comparison-slider>
-				<div class="table-wrapper">
-					<table width="100%">
-						<tbody>
-							<tr>
-								<td align="center"> Left Model</td>
-								<td align="center"> Frame</td>
-								<td align="center"> Right Model</td>
-							</tr>
-							<tr>
-								<td align="center"> 
-									<select id="left_select_NeRF_Lego" onchange="select_model(this, 'left', 'NeRF', 'Lego')"> 
-										<option value="GT">Ground Truth </option>
-										<option selected="selected" value="TensoRF">TensoRF </option>
-										<option value="6.25e-12">Ours-Sparsity 0.8758 </option>
-										<option value="1.25e-11">Ours-Sparsity 0.9165 </option>
-										<option value="2.5e-11">Ours-Sparsity 0.9441 </option>
-										<option value="5e-11">Ours-Sparsity 0.9652 </option>
-										<option value="1e-10">Ours-Sparsity 0.9794 </option>
-										<option value="2e-10">Ours-Sparsity 0.9864 </option>
-										<option value="4e-10">Ours-Sparsity 0.9907 </option>
-										<option value="8e-10">Ours-Sparsity 0.9940 </option>
-										<option value="1.6e-09">Ours-Sparsity 0.9959 </option>
-									</select></td><td align="center"> 
-										<input id="input_NeRF_Lego" type="range" min="0" max="199" value="0" onchange="select_frame(this, 'NeRF', 'Lego')">
-									</td>
-									<td align="center"> 
-										<select id="right_select_NeRF_Lego" onchange="select_model(this, 'right', 'NeRF', 'Lego')"> 
-											<option value="GT">Ground Truth </option>
-											<option value="TensoRF">TensoRF </option>
-											<option value="6.25e-12">Ours-Sparsity 0.8758 </option>
-											<option value="1.25e-11">Ours-Sparsity 0.9165 </option>
-											<option value="2.5e-11">Ours-Sparsity 0.9441 </option>
-											<option selected="selected" value="5e-11">Ours-Sparsity 0.9652 </option>
-											<option value="1e-10">Ours-Sparsity 0.9794 </option>
-											<option value="2e-10">Ours-Sparsity 0.9864 </option>
-											<option value="4e-10">Ours-Sparsity 0.9907 </option>
-											<option value="8e-10">Ours-Sparsity 0.9940 </option>
-											<option value="1.6e-09">Ours-Sparsity 0.9959 </option>
-										</select>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div> -->
 
 				
 				<hr>
@@ -367,41 +231,6 @@
 					<source src="videos/tools.mp4" type="video/mp4">
 					Sorry, your browser doesn't support embedded videos.
 				</video>
-				
-				
-				<!-- <p><strong>NSVF Synthetic Dataset</strong></p>
-				<video controls style="width:48%" autoplay loop playsinline muted>
-					<source src="videos/NSVF/Bike_mixed.mp4" type="video/mp4">
-					Sorry, your browser doesn't support embedded videos.
-				</video>
-				<video controls style="width:48%" autoplay loop playsinline muted>
-					<source src="videos/NSVF/Lifestyle_mixed.mp4" type="video/mp4">
-					Sorry, your browser doesn't support embedded videos.
-				</video>
-				<video controls style="width:48%" autoplay loop playsinline muted>
-					<source src="videos/NSVF/Palace_mixed.mp4" type="video/mp4">
-					Sorry, your browser doesn't support embedded videos.
-				</video>
-				<video controls style="width:48%" autoplay loop playsinline muted>
-					<source src="videos/NSVF/Robot_mixed.mp4" type="video/mp4">
-					Sorry, your browser doesn't support embedded videos.
-				</video>
-				<video controls style="width:48%" autoplay loop playsinline muted>
-					<source src="videos/NSVF/Spaceship_mixed.mp4" type="video/mp4">
-					Sorry, your browser doesn't support embedded videos.
-				</video>
-				<video controls style="width:48%" autoplay loop playsinline muted>
-					<source src="videos/NSVF/Steamtrain_mixed.mp4" type="video/mp4">
-					Sorry, your browser doesn't support embedded videos.
-				</video>
-				<video controls style="width:48%" autoplay loop playsinline muted>
-					<source src="videos/NSVF/Toad_mixed.mp4" type="video/mp4">
-					Sorry, your browser doesn't support embedded videos.
-				</video>
-				<video controls style="width:48%" autoplay loop playsinline muted>
-					<source src="videos/NSVF/Wineholder_mixed.mp4" type="video/mp4">
-					Sorry, your browser doesn't support embedded videos.
-				</video> -->
 				
 				<hr>
 				<div class="w3-center">
