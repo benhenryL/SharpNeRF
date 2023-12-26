@@ -114,6 +114,12 @@
 			border-bottom: 1px solid;
 		}
 	</style>
+	<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+			tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+		});
+	</script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
 </head>
 
 <body class="w3-white">
@@ -135,7 +141,7 @@
 				</div>
 
 				<div class="w3-center">
-					<h3>[<a href="https://github.com/benhenryL/SharpNeRF">Code</a>] &emsp; [<a href="https://arxiv.org/abs/2212.09069">Paper</a>]</h3>
+					<h3>[<a href="https://github.com/benhenryL/SharpNeRF">Code</a>] &emsp; [<a href="">Paper</a>]</h3>
 				</div>
 
 				<hr>
@@ -165,6 +171,7 @@
 				</div>
 
 				<p><strong>Sharpness Prior</strong></p>
+				<p align="justify">We propose to leverage a sharpness prior to accurately model the deblurring phenomenon for sharp NeRF. By applying this sharpness prior, sharpness level of image pixels is determined. This sharpness information plays a key role in learning the suitable blur kernels for those pixels.</p>
 				<div class="w3-display-container w3-row w3-white w3-margin-bottom">
 					<div align="center">
 						<img src="images/focus_measure_operator_ablation_study.png" style="width:100%">
@@ -173,6 +180,7 @@
 				</div>
 
 				<p><strong>Grid-based Blur Kernel</strong></p>
+				<p align="justify">Our grid-based blur kernels can be directly optimized to model the spatially-varying blurriness of the given scene, in contrast to previous works that employed MLP to generate blur kernels.</p>
 				<div class="w3-display-container w3-row w3-white w3-margin-bottom">
 					<div align="center">
 						<img src="images/kernel_vis.png" style="width:100%">
@@ -181,13 +189,13 @@
 				</div>
 
 				<p><strong>Patch Sampling</strong></p>
+				<p align="justify">With random patch sampling, we have reduced the number of required neighboring rays per ray from $K^2$ to  $\frac{{\left (P'+K+1 \right )}^2}{{P'}^2}$.</p>
 				<div class="w3-display-container w3-row w3-white w3-margin-bottom">
 					<div align="center">
 						<img src="images/patch_sampling.png" style="width:100%">
 						<p align="justify">Left: random ray sampling. Right: random patch sampling. Blue pixels are P′ × P′ interesting pixels to be rendered
 							and skyblue pixels are required neighboring pixels for blur convolution.</p>
 				</div>
-
 				
 				<hr>
 				<p><strong>Deblur Defocus Dataset</strong></p>
@@ -249,7 +257,7 @@
 				<hr>
 				<div class="w3-center">
 					<p class="text-justify">
-						We used the project page of <a href="https://github.com/daniel03c1/masked_wavelet_nerf/">Masked Wavelet Representation for Compact Neural Radiance Fields</a> as a template.
+						We used the project page of <a href="https://leonidk.github.io/fuzzy-metaballs/">Fuzzy Metaballs</a> as a template, and our interactive demo is based on <a href="https://kakaobrain.github.io/NeRF-Factory/">NeRF-Factory</a>.
 					</p>
 				</div>
 			</div>
