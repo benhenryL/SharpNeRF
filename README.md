@@ -2,6 +2,6 @@
 
 Byeonghyeon Lee*, Howoong Lee*, Usman Ali, and Eunbyung Park
 
-[Project Page](https://benhenryl.github.io/SharpNeRF/)
+[Project Page](https://benhenryl.github.io/SharpNeRF/) [Paper](https://arxiv.org/abs/2401.00825/)
 
 The code will be coming soon!!
